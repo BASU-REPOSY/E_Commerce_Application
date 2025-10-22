@@ -1,4 +1,11 @@
 package ecommerce_app.repository;
 
-public class UserRepository {
+
+import ecommerce_app.DTO.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByUsername(String username);
 }

@@ -1,4 +1,4 @@
-package ecommerce_app;
+package ecommerce_app.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
