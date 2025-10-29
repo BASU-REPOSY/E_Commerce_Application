@@ -24,9 +24,9 @@ public class Product_Controller {
     private static final Logger log = LoggerFactory.getLogger(Product_Controller.class);
 
     @GetMapping()
-    public ResponseEntity<List<Product_Det>> getProduct(@RequestBody Product_Det productDet){
+    public ResponseEntity<List<Product_Det>> getProduct(@RequestParam String name){
         log.info("EXECUTED");
-        Optional<List<Product_Det>> products = productService.getProducts(productDet.getName());
+        Optional<List<Product_Det>> products = productService.getProducts(name);
         List<Product_Det> prodList = products.orElse(Collections.emptyList());
         if(prodList.isEmpty()) {
             return new ResponseEntity<List<Product_Det>>( prodList, HttpStatus.NO_CONTENT);

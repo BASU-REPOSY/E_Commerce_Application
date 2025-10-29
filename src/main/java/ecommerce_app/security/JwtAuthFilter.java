@@ -1,11 +1,12 @@
 package ecommerce_app.security;
 
-
 import ecommerce_app.utils.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,9 +15,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Enumeration;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
+
+    private static final Logger log = LoggerFactory.getLogger(JwtAuthFilter.class);
 
     private final JwtUtils jwtUtils;
 
@@ -34,7 +39,24 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
+        // log method and headers to debug why Authorization is null
+        log.debug("Request method: {}  URI: {}", request.getMethod(), request.getRequestURI());
+        Enumeration<String> names = request.getHeaderNames();
+        if (names != null) {
+            Collections.list(names).forEach(h -> log.debug("Header: {} = {}", h, request.getHeader(h)));
+        }
+
+        // Preflight requests won't contain Authorization — skip auth for OPTIONS
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String header = request.getHeader("Authorization");
+        if (header == null) {
+            // also try lowercase just for debugging (not required by servlet spec)
+            header = request.getHeader("authorization");
+        }
 
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
