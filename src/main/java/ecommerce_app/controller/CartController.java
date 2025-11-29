@@ -24,6 +24,13 @@ public class CartController {
 
     @GetMapping("/{userId}")
     public CartDTO getCart(@PathVariable Long userId) {
+        if(cartService.getCart(userId) == null) {
+            CartDTO emptyCart = new CartDTO();
+            emptyCart.setUserId(userId);
+            emptyCart.setUpdatedAt("N/A");
+            emptyCart.setMessage("Cart is empty");
+            return emptyCart;
+        }
         return cartService.getCart(userId);
     }
 

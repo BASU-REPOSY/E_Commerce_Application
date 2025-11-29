@@ -1,9 +1,11 @@
 package ecommerce_app.services;
 import ecommerce_app.repository.UserRepository;
 import org.springframework.security.core.userdetails.*;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
+@Component
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;

@@ -11,4 +11,5 @@ public class CartDTO implements Serializable {
     private Long userId;
     private List<CartItemDTO> items = new ArrayList<>();
     private String updatedAt ;
+    private String message;
 }
