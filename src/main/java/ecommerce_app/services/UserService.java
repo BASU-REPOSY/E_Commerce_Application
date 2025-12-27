@@ -21,7 +21,7 @@ public class UserService {
     public void registerUser(User user) {
         // ✅ Encode the password before saving
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
+        user.setUsername(user.getUsername());
         // optionally set default roles
         user.setRoles(Set.of("ROLE_USER"));
 

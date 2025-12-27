@@ -1,12 +1,11 @@
 package ecommerce_app.repository;
 
-import ecommerce_app.DTO.Product_Det;
-import ecommerce_app.DTO.User;
+import ecommerce_app.DTO.ProductDet;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductRepository extends JpaRepository<Product_Det, Long> {
-    Optional<List<Product_Det>> findByName(String name);
+public interface ProductRepository extends JpaRepository<ProductDet, String> {
+    Optional<List<ProductDet>> findByName(String name);
 }

@@ -28,7 +28,7 @@ public class CartController {
             CartDTO emptyCart = new CartDTO();
             emptyCart.setUserId(userId);
             emptyCart.setUpdatedAt("N/A");
-            emptyCart.setMessage("Cart is empty");
+//            emptyCart.setMessage(setUpdatedAt"Cart is empty");
             return emptyCart;
         }
         return cartService.getCart(userId);
