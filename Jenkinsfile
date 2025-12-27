@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'maven_3.9.11'
+        maven 'maven'
     }
 
     parameters {
@@ -13,14 +13,8 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                checkout scmGit(
-                    branches: [[name: "*/${params.BRANCH}"]],
-                    extensions: [],
-                    userRemoteConfigs: [[
-                        url: 'https://github.com/BASU-REPOSY/E_Commerce_Application.git',
-                        credentialsId: 'git-ssh-key'   // 🔑 MUST EXIST IN JENKINS
-                    ]]
-                )
+                            checkout scmGit(branches: [[name: "*/${params.BRANCH}"]], extensions: [], userRemoteConfigs: [[url: 'https://github.com/BASU-REPOSY/E_Commerce_Application']])
+
             }
         }
 
