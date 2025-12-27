@@ -1,15 +1,35 @@
 pipeline {
     agent any
-    tools{
+
+    tools {
         maven 'maven_3.9.11'
     }
+
+    parameters {
+        string(name: 'BRANCH', defaultValue: 'main', description: 'Git branch to build')
+    }
+
     stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scmGit(
+                    branches: [[name: "*/${params.BRANCH}"]],
+                    extensions: [],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/BASU-REPOSY/E_Commerce_Application.git',
+                        credentialsId: 'git-ssh-key'   // 🔑 MUST EXIST IN JENKINS
+                    ]]
+                )
+            }
+        }
+
         stage('Build Maven') {
             steps {
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/BASU-REPOSY/E_Commerce_Application']])
                 sh 'mvn clean install'
             }
         }
+
         stage('Build Docker Image') {
             steps {
                 sh '''
@@ -18,18 +38,16 @@ pipeline {
                 '''
             }
         }
-        stage('pushtoDocker'){
-            steps{
+
+        stage('Push to Docker Hub') {
+            steps {
                 withCredentials([string(credentialsId: 'SECRETE', variable: 'hub')]) {
                     sh '''
                     export PATH=$PATH:/usr/local/bin:/opt/homebrew/bin
                     docker login -u basu122 -p ${hub}
-                    '''
-                }
-                sh '''
-                    export PATH=$PATH:/usr/local/bin:/opt/homebrew/bin
                     docker push basu122/e-commerce-docker
                     '''
+                }
             }
         }
     }
