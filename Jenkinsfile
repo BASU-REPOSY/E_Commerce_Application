@@ -35,7 +35,7 @@ pipeline {
 
         stage('Push to Docker Hub') {
             steps {
-                withCredentials([string(credentialsId: 'SECRETE', variable: 'hub')]) {
+                withCredentials([string(credentialsId: 'SECRETE', variable: 'DOCKER_SECRETE')]) {
                     sh '''
                     export PATH=$PATH:/usr/local/bin:/opt/homebrew/bin
                     docker login -u basu122 -p ${hub}
