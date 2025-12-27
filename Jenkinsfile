@@ -38,7 +38,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'SECRETE', variable: 'DOCKER_SECRETE')]) {
                     sh '''
                     export PATH=$PATH:/usr/local/bin:/opt/homebrew/bin
-                    docker login -u basu122 -p ${hub}
+                    docker login -u basu122 -p ${DOCKER_SECRETE}
                     docker push basu122/e-commerce-docker
                     '''
                 }
